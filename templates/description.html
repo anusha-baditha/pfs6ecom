@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        body{
+            background: url(https://st3.depositphotos.com/5411610/15334/i/450/depositphotos_153344150-stock-photo-small-empty-shopping-cart.jpg);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            text-shadow: 2px 2px 15px rgb(0, 0, 0);
+            color: white;
+        }
+        span{
+            color: red;
+            font-size: 25px;
+        }
+    </style>
+</head>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+      <center style="color: white;">{{ message }}</center>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+<body>
+    <div class="container">
+        <div class="row d-flex justify-content-center align-items-center flex-row" style="margin-top: 7%;">
+            <div class="col-12 col-md-6">
+                <img src="/static/{{data[6]}}" alt="ntg" width="70%" height="500px" style="border-radius: 10px;">
+            </div>
+            <div class="col-12 col-md-6">
+                <h6 class="name"><span>Name:- {{data[1]}} </span> </h6><br>
+                <h6 class="item_id"><span>Item_id:- {{data[0]}}</span>  </h6><br>
+                <h6 class="desc"><span>Description:-{{data[2]}}</span> </h6><br>
+                <h6 class="cat"><span>Category:- {{data[3]}}</span>   </h6><br>
+                <h6 class="price"> <span>Price:- {{data[4]}} </span>/- </h6><br>
+                <h6 class="price"> <span>Available Stock:- {{data[5]}} </span></h6><br>
+
+                <div class="button">
+                    {% if session.get('user') %}
+                    <a href="{{url_for('addreview',itemid=data[0])}}"><button
+                            class="btn btn-success">ADD_Review</button></a>
+                    {% endif %}
+                    <a href="#"><button
+                            class="btn btn-danger">ADD CART</button></a>
+                    <a href="{{url_for('readreview',itemid=data[0])}}"><button
+                            class="btn btn-success">Read_Review</button></a>
+                    <a href="{{url_for('index')}}"><button
+                            class="btn btn-danger">BACK</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% for i in data2 %}
+    <label>review: {{i[1]}}</label>
+    <label>title: {{i[6]}}</label>
+    <label>rating: {{i[5]}}</label>
+    <label>user: {{i[3]}}</label>
+    {% endfor %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+</body>
+</html>
