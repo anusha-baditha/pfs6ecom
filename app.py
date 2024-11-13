@@ -27,14 +27,14 @@ db=os.environ.get('RDS_DB_NAME')
 password=os.environ.get('RDS_PASSWORD')
 host=os.environ.get('RDS_HOSTNAME')
 port=os.environ.get('RDS_PORT')
-with connection.MySQLConnection(host=host,port=port,db=db,user=user,password=password) as conn:
+with mysql.connector.connect(host=host,port=port,db=db,user=user,password=password) as conn:
     cursor=conn.cursor()
     cursor.execute("CREATE TABLE if not exists user (user_id int NOT NULL AUTO_INCREMENT,username varchar(100) NOT NULL,email varchar(100) NOT NULL,password varbinary(200) NOT NULL,address text NOT NULL,gender enum('male','female') DEFAULT NULL,PRIMARY KEY (user_id),UNIQUE KEY email (email))")
     cursor.execute("CREATE TABLE if not exists admin (admin_name varchar(100) NOT NULL,email varchar(30) NOT NULL,password varbinary(200) DEFAULT NULL,image_name varchar(10) DEFAULT NULL,address tinytext,admin_id int NOT NULL AUTO_INCREMENT,PRIMARY KEY (admin_id),UNIQUE KEY email (email))")
     cursor.execute("CREATE TABLE if not exists items (itemid binary(16) NOT NULL,item_name longtext NOT NULL,description longtext NOT NULL,category enum('electronics','home','fashion','grocery') DEFAULT NULL,price bigint DEFAULT NULL,quantity int DEFAULT NULL,image_name varchar(10) NOT NULL,added_by int DEFAULT NULL,PRIMARY KEY (itemid),KEY added_by (added_by),CONSTRAINT items_ibfk_1 FOREIGN KEY (added_by) REFERENCES admin (admin_id))")
     cursor.execute("CREATE TABLE if not exists  review (r_id int NOT NULL AUTO_INCREMENT,review_text text,itemid binary(16) DEFAULT NULL,added_by int DEFAULT NULL,created_at datetime DEFAULT CURRENT_TIMESTAMP,rating enum('1','2','3','4','5') DEFAULT NULL,title text NOT NULL,PRIMARY KEY (r_id),KEY itemid (itemid),KEY added_by (added_by),CONSTRAINT review_ibfk_1 FOREIGN KEY (itemid) REFERENCES items (itemid),CONSTRAINT review_ibfk_2 FOREIGN KEY (added_by) REFERENCES user (user_id))")
     cursor.execute("CREATE TABLE if not exists orders (ord_id bigint NOT NULL AUTO_INCREMENT,item_name longtext,qyt int DEFAULT NULL,total_price bigint DEFAULT NULL,user int DEFAULT NULL,itemid binary(16) DEFAULT NULL,PRIMARY KEY (ord_id),KEY user (user),KEY item_od (itemid),CONSTRAINT item_od FOREIGN KEY (itemid) REFERENCES items (itemid) ON DELETE SET NULL,CONSTRAINT orders_ibfk_2 FOREIGN KEY (user) REFERENCES user (user_id))")
-mydb=connection.MySQLConnection(host=host,user=user,port=port,password=password,db=db)
+mydb=mysql.connector.connect(host=host,user=user,port=port,password=password,db=db)
 
 
 @app.route('/')
