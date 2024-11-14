@@ -35,8 +35,6 @@ with mysql.connector.connect(host=host,port=port,db=db,user=user,password=passwo
     cursor.execute("CREATE TABLE if not exists  review (r_id int NOT NULL AUTO_INCREMENT,review_text text,itemid binary(16) DEFAULT NULL,added_by int DEFAULT NULL,created_at datetime DEFAULT CURRENT_TIMESTAMP,rating enum('1','2','3','4','5') DEFAULT NULL,title text NOT NULL,PRIMARY KEY (r_id),KEY itemid (itemid),KEY added_by (added_by),CONSTRAINT review_ibfk_1 FOREIGN KEY (itemid) REFERENCES items (itemid),CONSTRAINT review_ibfk_2 FOREIGN KEY (added_by) REFERENCES user (user_id))")
     cursor.execute("CREATE TABLE if not exists orders (ord_id bigint NOT NULL AUTO_INCREMENT,item_name longtext,qyt int DEFAULT NULL,total_price bigint DEFAULT NULL,user int DEFAULT NULL,itemid binary(16) DEFAULT NULL,PRIMARY KEY (ord_id),KEY user (user),KEY item_od (itemid),CONSTRAINT item_od FOREIGN KEY (itemid) REFERENCES items (itemid) ON DELETE SET NULL,CONSTRAINT orders_ibfk_2 FOREIGN KEY (user) REFERENCES user (user_id))")
 mydb=mysql.connector.connect(host=host,user=user,port=port,password=password,db=db)
-
-
 @app.route('/')
 def home():
     return render_template('welcome.html')
